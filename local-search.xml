@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>happy~happy~happy~</title>
+    <link href="/2025/01/30/3/"/>
+    <url>/2025/01/30/3/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>study</title>
+    <link href="/2025/01/27/2/"/>
+    <url>/2025/01/27/2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="GDOUCTF-2023-Check-Your-Luck"><a href="#GDOUCTF-2023-Check-Your-Luck" class="headerlink" title="[GDOUCTF 2023]Check_Your_Luck"></a>[GDOUCTF 2023]Check_Your_Luck</h1><p><img src="/2025/01/27/2/z3%E6%B1%82%E8%A7%A30.png"></p><p>z3求解,第一次见查一查，挺简单的，写个脚本吧</p><p><img src="/2025/01/27/2/z3%E6%B1%82%E8%A7%A32.png"></p><h1 id="相册"><a href="#相册" class="headerlink" title="相册"></a>相册</h1><h2 id="APK文件，使用jadx-gui打开"><a href="#APK文件，使用jadx-gui打开" class="headerlink" title="APK文件，使用jadx-gui打开"></a>APK文件，使用jadx-gui打开</h2><h2 id="查找关键词邮箱-mail"><a href="#查找关键词邮箱-mail" class="headerlink" title="查找关键词邮箱(mail)"></a>查找关键词邮箱(mail)</h2><p>发现一个静态方法<code>sendMailByJavaMail</code>(用于通过 JavaMail API 发送电子邮件)</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C1.png"></p><p>右击查找用例</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C2.png"></p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C3.png"></p><p>表示调用 <code>A2</code> 类中的静态方法 (判断：方法名前面有类名)<code>sendMailByJavaMail</code></p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C4.png"></p><p>他接受了三个参数</p><p>该方法接受三个参数：</p><ol><li><code>C2.MAILSERVER</code>: 邮件服务器地址或配置。</li><li><code>&quot;通讯录(&quot; + tel + &quot;IMEI&quot; + imei + &quot;)&quot;</code>: 邮件的主题。</li><li><code>notebooks</code>: 邮件的内容。</li></ol><p>跟进MAILSERVER</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C5.png"></p><p>用loadlibrary函数，加载了core.so文件中的内容</p><p>base64关键字</p><p>跟进NativeMethod</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C6.png"></p><p>三个方法均返回字符串</p><h2 id="解压apk文件，访问libcore-so"><a href="#解压apk文件，访问libcore-so" class="headerlink" title="解压apk文件，访问libcore.so"></a>解压apk文件，访问libcore.so</h2><p>查壳，用IDA打开libcore.so</p><p>shift+F12查找关键信息</p><p>base64编码</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C7.png"></p><p>解码得到flag</p><p><img src="/2025/01/27/2/%E7%9B%B8%E5%86%8C9.png"></p><h1 id="BJDCTF-2020-JustRE"><a href="#BJDCTF-2020-JustRE" class="headerlink" title="[BJDCTF 2020]JustRE"></a>[BJDCTF 2020]JustRE</h1><h2 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h2><p><img src="/2025/01/27/2/justre1.png"></p><p>shift+F12查找关键词</p><p><img src="/2025/01/27/2/justre2.png"></p><p>好像，追踪</p><p><img src="/2025/01/27/2/justre3.png"></p><p>点击19999下给你flag,666这是要累死你，动态调试一下看看</p><p>嗯，他就是这个意思end</p><h1 id="Z3小知识"><a href="#Z3小知识" class="headerlink" title="Z3小知识"></a>Z3小知识</h1><p><img src="/2025/01/27/2/z3%E6%B1%82%E8%A7%A31.png"></p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">from</span> z3 import *<br><span class="hljs-keyword">a</span>,b=Ints(<span class="hljs-string">&#x27;a b&#x27;</span>)<br>s=Solver() <span class="hljs-comment">#创建一个约束求解器</span><br>s.<span class="hljs-built_in">add</span>(<span class="hljs-keyword">a</span>+b==<span class="hljs-number">10</span>) <span class="hljs-comment">#添加约束条件</span><br>s.<span class="hljs-built_in">add</span>(<span class="hljs-keyword">a</span>+<span class="hljs-number">3</span>*b==<span class="hljs-number">12</span>)<br><br><span class="hljs-keyword">if</span> s.check()==sat: <span class="hljs-comment">#有解</span><br>    r=s.model() <span class="hljs-comment">#求解</span><br>print(r) <span class="hljs-comment">#[b = 1, a = 9]</span><br>print(r[<span class="hljs-keyword">a</span>]) <span class="hljs-comment">#9</span><br>print(r[b]) <span class="hljs-comment">#1</span><br><br></code></pre></td></tr></table></figure><h1 id="APK文件"><a href="#APK文件" class="headerlink" title="APK文件"></a>APK文件</h1><p>APK（Android Package）是 Android 应用程序的安装包文件格式。它包含了应用程序的所有代码、资源、配置文件等。</p><h2 id="APK-文件结构"><a href="#APK-文件结构" class="headerlink" title="APK 文件结构"></a><strong>APK 文件结构</strong></h2><p>APK 文件本质上是一个 ZIP 压缩包，包含以下主要文件和目录：</p><ul><li><strong><code>AndroidManifest.xml</code></strong>:<ul><li>应用程序的配置文件，定义了应用的基本信息（如包名、版本号、权限、组件等）。</li><li>使用二进制 XML 格式存储，需要通过工具（如 <code>apktool</code>）反编译后才能查看。</li></ul></li><li><strong><code>classes.dex</code></strong>:<ul><li>包含应用程序的 Java&#x2F;Kotlin 代码编译后的 Dalvik 字节码。</li><li>可能包含多个 <code>.dex</code> 文件（如 <code>classes2.dex</code>），用于支持多 Dex 文件的应用。</li></ul></li><li><strong><code>resources.arsc</code></strong>:<ul><li>编译后的资源索引表，存储了字符串、布局、样式等资源的映射关系。</li><li>通过资源 ID 快速定位资源。</li></ul></li><li><strong><code>res/</code></strong>:<ul><li>包含应用程序的资源文件（如图片、布局文件、字符串等）。</li><li>子目录包括 <code>drawable/</code>、<code>layout/</code>、<code>values/</code> 等。</li><li><strong><code>assets/</code></strong>:<ul><li>存放原始资源文件（如字体、配置文件等），不会被编译到 <code>resources.arsc</code> 中。</li><li>通过 <code>AssetManager</code> 访问。</li></ul></li><li><strong><code>lib/</code></strong>:<ul><li>包含应用程序的本地库（如 <code>.so</code> 文件），通常按 CPU 架构分类（如 <code>armeabi-v7a</code>、<code>arm64-v8a</code>）。</li></ul></li><li><strong><code>META-INF/</code></strong>:<ul><li>包含应用的签名信息，用于验证 APK 的完整性和来源。</li><li>主要文件：<ul><li><code>MANIFEST.MF</code>：列出所有文件的哈希值。</li><li><code>CERT.SF</code>：签名文件的哈希值。</li><li><code>CERT.RSA</code>：包含公钥和签名信息。</li></ul></li></ul></li></ul></li></ul><h2 id="APK-的反编译与修改"><a href="#APK-的反编译与修改" class="headerlink" title="APK 的反编译与修改"></a><strong>APK 的反编译与修改</strong></h2><ul><li><strong>反编译工具</strong>:<ul><li><code>apktool</code>：反编译 APK，提取资源和 <code>AndroidManifest.xml</code>。</li><li><code>dex2jar</code>：将 <code>.dex</code> 文件转换为 <code>.jar</code> 文件，便于查看 Java 代码。</li><li><code>JD-GUI</code>：查看 <code>.jar</code> 文件中的 Java 代码。</li></ul></li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>是逆向啊</title>
+    <link href="/2025/01/23/heihei/"/>
+    <url>/2025/01/23/heihei/</url>
+    
+    <content type="html"><![CDATA[<h1 id="HNCTF-2022-WEEK2-e-sy-flower"><a href="#HNCTF-2022-WEEK2-e-sy-flower" class="headerlink" title="[HNCTF 2022 WEEK2]e@sy_flower"></a>[HNCTF 2022 WEEK2]e@sy_flower</h1><h2 id="1-查壳选择合适IDA"><a href="#1-查壳选择合适IDA" class="headerlink" title="1.查壳选择合适IDA"></a>1.查壳选择合适IDA</h2><h2 id="2-发现去除花指令"><a href="#2-发现去除花指令" class="headerlink" title="2.发现去除花指令"></a>2.发现去除花指令</h2><h4 id="发现花指令"><a href="#发现花指令" class="headerlink" title="发现花指令"></a>发现花指令</h4><p>jnz+jz用连续两条相反的条件跳转，或是通过stc&#x2F;clc汇编指令来设置位，使条件跳转变为永真或者永假跳转</p><h4 id="将花指令nop"><a href="#将花指令nop" class="headerlink" title="将花指令nop"></a>将花指令nop</h4><p><img src="/2025/01/23/heihei/flower1.png" alt="flower1"></p><p>Edit-Patch program-Change bytes<br>将E9改为90<br><img src="/2025/01/23/heihei/flower2.png" alt="flower2"></p><h2 id="3-反编译"><a href="#3-反编译" class="headerlink" title="3.反编译"></a>3.反编译</h2><p>找到main函数，在main函数之前摁P重定义<br><img src="/2025/01/23/heihei/flower3.png" alt="flower3"><br>F5反编译<br><img src="/2025/01/23/heihei/flower4.png" alt="flower4"></p><h4 id="函数的分析"><a href="#函数的分析" class="headerlink" title="函数的分析"></a>函数的分析</h4><p>(1)Arglist中的字符两两交换位置（2n与2n+1交换）</p><p>(2)Arglist中的每个字符与字符’0’进行异或操作</p><h2 id="4-脚本"><a href="#4-脚本" class="headerlink" title="4.脚本"></a>4.脚本</h2><p><img src="/2025/01/23/heihei/flower5.png" alt="flower5"><br>嘿嘿嘿得到flag</p><h1 id="LitCTF-2023-ez-XOR"><a href="#LitCTF-2023-ez-XOR" class="headerlink" title="[LitCTF 2023]ez_XOR"></a>[LitCTF 2023]ez_XOR</h1><h2 id="1-查壳选IDA"><a href="#1-查壳选IDA" class="headerlink" title="1.查壳选IDA"></a>1.查壳选IDA</h2><h2 id="2-寻找关键字符"><a href="#2-寻找关键字符" class="headerlink" title="2.寻找关键字符"></a>2.寻找关键字符</h2><h4 id="shift-F12"><a href="#shift-F12" class="headerlink" title="shift+F12"></a>shift+F12</h4><p>发现关键字并追踪<br><img src="/2025/01/23/heihei/ez_xor0.png" alt="ez_xor0"></p><h2 id="3-反编译-1"><a href="#3-反编译-1" class="headerlink" title="3.反编译"></a>3.反编译</h2><p><img src="/2025/01/23/heihei/ez_xor.png" alt="ez_xor"><br>并不是到此处就可以直接写脚本了，点击XOR发现里面还有玄机<br><img src="/2025/01/23/heihei/ez_xor1.png" alt="ez_xor1"><br>好了，现在可以写脚本了</p><h2 id="4-脚本-1"><a href="#4-脚本-1" class="headerlink" title="4.脚本"></a>4.脚本</h2><p><img src="/2025/01/23/heihei/ez_xor2.png" alt="ez_xor2"></p><h1 id="花指令的小知识"><a href="#花指令的小知识" class="headerlink" title="花指令的小知识"></a>花指令的小知识</h1><h2 id="形式一"><a href="#形式一" class="headerlink" title="形式一:"></a>形式一:</h2><p>如果我们插入的花指令是一个操作码，那么后面程序原本的机器码就会被误认为是这个操作码的操作数，从而导致反汇编引擎的解析错误。</p><h2 id="形式二："><a href="#形式二：" class="headerlink" title="形式二："></a>形式二：</h2><p>插入的花指令也可以是改变堆栈平衡的汇编代码，跟形式一相同在这些花指令上面写上跳转指令，虽然花指令不会被执行，但是IDA进行解析时会认为该函数堆栈不平衡，从而使F5功能失效</p><h1 id="保持堆栈的平衡"><a href="#保持堆栈的平衡" class="headerlink" title="保持堆栈的平衡"></a>保持堆栈的平衡</h1><p>push ebp —  -把基址指针寄存器压入堆栈<br>pop ebp —-把基址指针寄存器弹出堆栈<br>push eax —-把数据寄存器压入堆栈<br>pop eax —-把数据寄存器弹出堆栈<br>nop —–不执行<br>add esp,1—–指针寄存器加1<br>sub esp,-1—–指针寄存器加1<br>add esp,-1——–指针寄存器减1<br>sub esp,1—–指针寄存器减1<br>inc ecx —–计数器加1<br>dec ecx —–计数器减1<br>sub esp,1 —-指针寄存器-1<br>sub esp,-1—-指针寄存器加1<br>jmp 入口地址—-跳到程序入口地址<br>push 入口地址—把入口地址压入堆栈<br>retn —— 反回到入口地址,效果与jmp 入口地址一样<br>mov eax,入口地址 ——把入口地址转送到数据寄存器中.<br>jmp eax —– 跳到程序入口地址<br>jb 入口地址<br>jnb 入口地址 ——效果和jmp 入口地址一样,直接跳到程序入口地址<br>xor eax,eax 寄存器EAX清0<br>CALL 空白命令的地址 无效call</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>My New Post</title>
+    <link href="/2025/01/16/My-New-Post/"/>
+    <url>/2025/01/16/My-New-Post/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="/2025/01/16/hello-world/"/>
+    <url>/2025/01/16/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>

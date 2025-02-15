@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ţ��">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hell0~">
+<meta property="og:url" content="http://example.com/2025/02/04/4/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun4.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun5.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun6.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun7.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun8.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun9.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base4.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base5.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor0.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor4.png">
+<meta property="article:published_time" content="2025-02-04T05:14:52.000Z">
+<meta property="article:modified_time" content="2025-02-09T12:36:13.025Z">
+<meta property="article:author" content="ţ��">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/02/04/4/fun1.png">
+  
+  
+  
+  <title>hell0~ - </title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"5JJ9PAqs16kq01sfHmLwwPiu-gzGzoHsz","app_key":"DP58BDQMjqXMDoMsysTn1wG6","server_url":"https://1epgvtla.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>一夜</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="hell0~"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-04 13:14" pubdate>
+          2025年2月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span>次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">hell0~</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="WUSTCTF2020-Cr0ssfun"><a href="#WUSTCTF2020-Cr0ssfun" class="headerlink" title="[WUSTCTF2020]Cr0ssfun"></a>[WUSTCTF2020]Cr0ssfun</h2><h2 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
+<p><img src="/2025/02/04/4/fun1.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p><img src="/2025/02/04/4/fun2.png" srcset="/img/loading.gif" lazyload></p>
+<p>分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it!</p>
+<p>跟进check函数</p>
+<p><img src="/2025/02/04/4/fun3.png" srcset="/img/loading.gif" lazyload></p>
+<p>继续跟进就ok了</p>
+<p><img src="/2025/02/04/4/fun4.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2025/02/04/4/fun5.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2025/02/04/4/fun6.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2025/02/04/4/fun7.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2025/02/04/4/fun8.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2025/02/04/4/fun9.png" srcset="/img/loading.gif" lazyload></p>
+<p>按照下标将他们组合起来就得到flag<code>ctf2020&#123;cpp_@nd_r3verse_@re_fun&#125;</code></p>
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><p>感觉我做的好麻烦，去网上看看，同样很麻烦，顺了个没啥用的脚本</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs prolog">#include&lt;iostream&gt;<br>using namespace std;<br>int main()<br>&#123;<br>	char a1[<span class="hljs-number">32</span>];<br>	a1[<span class="hljs-number">1</span>] = <span class="hljs-string">&#x27;c&#x27;</span>;a1[<span class="hljs-number">25</span>] =<span class="hljs-string">&#x27;@&#x27;</span> ; a1[<span class="hljs-number">27</span>] = <span class="hljs-string">&#x27;e&#x27;</span>;<br>	  a1[<span class="hljs-number">4</span>] = <span class="hljs-string">&#x27;2&#x27;</span>;<br>      a1[<span class="hljs-number">17</span>] = <span class="hljs-string">&#x27;r&#x27;</span>;<br>       a1[<span class="hljs-number">29</span>] = <span class="hljs-string">&#x27;f&#x27;</span>;<br>       a1[<span class="hljs-number">17</span>]= <span class="hljs-string">&#x27;r&#x27;</span>;<br>       a1[<span class="hljs-number">24</span>] = <span class="hljs-string">&#x27;_&#x27;</span>;<br>       a1[<span class="hljs-number">2</span>] = <span class="hljs-string">&#x27;t&#x27;</span>;<br>       a1[<span class="hljs-number">9</span>] = <span class="hljs-string">&#x27;c&#x27;</span>;<br>       a1[<span class="hljs-number">32</span>] = <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>       a1[<span class="hljs-number">19</span>] = <span class="hljs-string">&#x27;v&#x27;</span>;<br>       a1[<span class="hljs-number">5</span>] = <span class="hljs-string">&#x27;0&#x27;</span>;<br>       a1[<span class="hljs-number">14</span>] = <span class="hljs-string">&#x27;n&#x27;</span>;<br>        a1[<span class="hljs-number">15</span>] = <span class="hljs-string">&#x27;d&#x27;</span>;<br>       a1[<span class="hljs-number">8</span>] =<span class="hljs-string">&#x27;&#123;&#x27;</span>;<br>       a1[<span class="hljs-number">18</span>] = <span class="hljs-string">&#x27;3&#x27;</span>;<br>       a1[<span class="hljs-number">28</span>] = <span class="hljs-string">&#x27;_&#x27;</span>;<br>       a1[<span class="hljs-number">21</span>] = <span class="hljs-string">&#x27;r&#x27;</span>;<br>        a1[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;w&#x27;</span>;<br>      a1[<span class="hljs-number">6</span>] = <span class="hljs-string">&#x27;2&#x27;</span>;<br>       a1[<span class="hljs-number">22</span>] = <span class="hljs-string">&#x27;s&#x27;</span>;<br>       a1[<span class="hljs-number">31</span>] = <span class="hljs-string">&#x27;n&#x27;</span>;<br>       a1[<span class="hljs-number">12</span>] = <span class="hljs-string">&#x27;_&#x27;</span>;<br>        a1[<span class="hljs-number">7</span>] = <span class="hljs-string">&#x27;0&#x27;</span>;<br>       a1[<span class="hljs-number">16</span>] = <span class="hljs-string">&#x27;_&#x27;</span>;<br>       a1[<span class="hljs-number">11</span>] = <span class="hljs-string">&#x27;p&#x27;</span>;<br>       a1[<span class="hljs-number">23</span>] = <span class="hljs-string">&#x27;e&#x27;</span>;<br>       a1[<span class="hljs-number">30</span>] = <span class="hljs-string">&#x27;u&#x27;</span>;<br>    	a1[<span class="hljs-number">10</span>] = <span class="hljs-string">&#x27;p&#x27;</span>;<br>       a1[<span class="hljs-number">13</span>] = <span class="hljs-string">&#x27;@&#x27;</span>;<br>       a1[<span class="hljs-number">3</span>] = <span class="hljs-string">&#x27;f&#x27;</span>;<br>       a1[<span class="hljs-number">26</span>] = <span class="hljs-string">&#x27;r&#x27;</span>;<br>      a1[<span class="hljs-number">20</span>] = <span class="hljs-string">&#x27;e&#x27;</span>;<br>      for(int i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">32</span>;i++)cout &lt;&lt; a1[i];  <br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="UTCTF2020-basic-re"><a href="#UTCTF2020-basic-re" class="headerlink" title="[UTCTF2020]basic-re"></a>[UTCTF2020]basic-re</h1><h2 id="查壳-1"><a href="#查壳-1" class="headerlink" title="查壳"></a>查壳</h2><p>64位无壳文件</p>
+<p><img src="/2025/02/04/4/base1.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="关键信息-反编译"><a href="#关键信息-反编译" class="headerlink" title="关键信息&amp;反编译"></a>关键信息&amp;反编译</h2><p>shift+F12查找字符串发现好多关键词，进去看看</p>
+<p>得到mTyqm7wjODkrNLcWl0eqO8K8gc1BPk1GNLgUpI&#x3D;&#x3D;</p>
+<p><code>base64Encode( )</code>进去看看吧</p>
+<p><img src="/2025/02/04/4/base2.png" srcset="/img/loading.gif" lazyload></p>
+<p>base编码过程，从其中找到编码表</p>
+<p><img src="/2025/02/04/4/base3.png" srcset="/img/loading.gif" lazyload></p>
+<p>AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0987654321&#x2F;+</p>
+<p><img src="/2025/02/04/4/base4.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>把他们扔进CyberChef</p>
+<p><img src="/2025/02/04/4/base5.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="GWCTF-2019-xxor"><a href="#GWCTF-2019-xxor" class="headerlink" title="[GWCTF 2019]xxor"></a>[GWCTF 2019]xxor</h1><h2 id="查壳-2"><a href="#查壳-2" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
+<p><img src="/2025/02/04/4/xxor0.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="查找关键信息"><a href="#查找关键信息" class="headerlink" title="查找关键信息"></a>查找关键信息</h2><p>shift+F12查找关键字Congratulation!点进去看看吧</p>
+<p><img src="/2025/02/04/4/xxor1.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="反编译-1"><a href="#反编译-1" class="headerlink" title="反编译"></a>反编译</h2><p>主要函数</p>
+<p><code>sub_400770(v7, a2) = 1</code>输出成功信息</p>
+<p><code>LODWORD(v7[j]) = dword_601078;</code>用于提取一个 64 位变量的低 32 位<br><code>HIDWORD(v7[j]) = dword_60107C;</code>用于提取一个 64 位变量的高 32 位</p>
+<p><img src="/2025/02/04/4/xxor2.png" srcset="/img/loading.gif" lazyload></p>
+<p>深入sub_400686函数，发现只要获得其中需要的数据就可以逆向得到答案</p>
+<p><img src="/2025/02/04/4/xxor3.png" srcset="/img/loading.gif" lazyload></p>
+<p>这是那个判断函数，从中就可以获得上面需要的信息</p>
+<p><img src="/2025/02/04/4/xxor4.png" srcset="/img/loading.gif" lazyload></p>
+<p>用前几天学过的z3</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">from</span> z3 import *<br><span class="hljs-attribute">a1</span>=[<span class="hljs-number">0</span>]*<span class="hljs-number">6</span><br><span class="hljs-attribute">a1</span>[<span class="hljs-number">0</span>],a1[<span class="hljs-number">1</span>],a1[<span class="hljs-number">2</span>],a1[<span class="hljs-number">3</span>],a1[<span class="hljs-number">4</span>],a1[<span class="hljs-number">5</span>]=Ints(&#x27;a1[<span class="hljs-number">0</span>] a1[<span class="hljs-number">1</span>] a1[<span class="hljs-number">2</span>] a1[<span class="hljs-number">3</span>] a1[<span class="hljs-number">4</span>] a1[<span class="hljs-number">5</span>]&#x27;)<br><span class="hljs-attribute">s</span> = Solver()<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">2</span>] - a1[<span class="hljs-number">3</span>]== <span class="hljs-number">2225223423</span>)<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">3</span>] + a1[<span class="hljs-number">4</span>]== <span class="hljs-number">4201428739</span>)<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">2</span>] - a1[<span class="hljs-number">4</span>]==<span class="hljs-number">1121399208</span>)<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">0</span>] ==-<span class="hljs-number">548868226</span>)<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">5</span>] == -<span class="hljs-number">2064448480</span>)<br><span class="hljs-attribute">s</span>.add(a1[<span class="hljs-number">1</span>] == <span class="hljs-number">550153460</span>)<br><span class="hljs-attribute">if</span> s.check()==sat:<br>    <span class="hljs-attribute">r</span>=s.model()<br><span class="hljs-attribute">print</span>(r)<br></code></pre></td></tr></table></figure>
+
+<p>解密 ，然后再十六进制转化成字符串，得到flag</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a2[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a1[<span class="hljs-number">6</span>] = &#123; <span class="hljs-number">3746099070</span>,<span class="hljs-number">550153460</span>, <span class="hljs-number">3774025685</span> ,<span class="hljs-number">1548802262</span> ,<span class="hljs-number">2652626477</span> ,<span class="hljs-number">2230518816</span> &#125;;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> flag[<span class="hljs-number">6</span>];<br><span class="hljs-type">unsigned</span> v3, v4;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i,j;<br><span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">6</span>; j+=<span class="hljs-number">2</span>)<br>&#123;<br>v3 = a1[j];<br>v4 = a1[j<span class="hljs-number">+1</span>];<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> tem = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>)<span class="hljs-number">0x458BCD42</span> * <span class="hljs-number">64</span>;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> sum = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>) tem;<br><span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">64</span>; i++)<br>&#123;<br>v4 -= (v3 + sum + <span class="hljs-number">20</span>) ^ ((v3 &lt;&lt; <span class="hljs-number">6</span>) + a2[<span class="hljs-number">2</span>]) ^ ((v3 &gt;&gt; <span class="hljs-number">9</span>) + a2[<span class="hljs-number">3</span>]) ^ <span class="hljs-number">16</span>;<br>v3 -= (v4 + sum + <span class="hljs-number">11</span>) ^ ((v4 &lt;&lt; <span class="hljs-number">6</span>) + a2[<span class="hljs-number">0</span>]) ^ ((v4 &gt;&gt; <span class="hljs-number">9</span>) + a2[<span class="hljs-number">1</span>]) ^ <span class="hljs-number">32</span>;<br>sum -= <span class="hljs-number">0x458BCD42</span>;<br>&#125;<br>flag[j] = v3;<br>flag[j + <span class="hljs-number">1</span>] = v4;<br>&#125;<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n = <span class="hljs-number">0</span>; n &lt; <span class="hljs-number">6</span>; n++)<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%x&quot;</span>, flag[n]);<br><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h1><h2 id="1-ELF（Executable-and-Linkable-Format）"><a href="#1-ELF（Executable-and-Linkable-Format）" class="headerlink" title="1. ELF（Executable and Linkable Format）"></a><strong>1. ELF（Executable and Linkable Format）</strong></h2><ul>
+<li><strong>使用平台</strong>：Linux、Unix、类Unix系统（如FreeBSD、Android）。</li>
+<li><strong>特点</strong>：<ul>
+<li>支持多种架构（如x86、ARM、RISC-V）。</li>
+<li>支持动态链接和静态链接。</li>
+<li>结构清晰，包含ELF头、程序头表、节头表。</li>
+<li>常用于可执行文件、共享库（.so）、目标文件（.o）和核心转储。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>readelf</code>、<code>objdump</code>、<code>nm</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.elf</code>、<code>.so</code>、<code>.o</code>。</li>
+</ul>
+<hr>
+<h2 id="2-PE（Portable-Executable）"><a href="#2-PE（Portable-Executable）" class="headerlink" title="2. PE（Portable Executable）"></a><strong>2. PE（Portable Executable）</strong></h2><ul>
+<li><strong>使用平台</strong>：Windows。</li>
+<li><strong>特点</strong>：<ul>
+<li>基于COFF（Common Object File Format）扩展。</li>
+<li>支持32位（PE32）和64位（PE32+）。</li>
+<li>包含DOS头、PE头、节表、导入表、导出表等。</li>
+<li>支持动态链接（DLL文件）和资源管理（如图标、菜单）。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>dumpbin</code>、<code>PEview</code>、<code>CFF Explorer</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.exe</code>、<code>.dll</code>、<code>.sys</code>。</li>
+</ul>
+<hr>
+<h2 id="3-Mach-O（Mach-Object）"><a href="#3-Mach-O（Mach-Object）" class="headerlink" title="3. Mach-O（Mach Object）"></a><strong>3. Mach-O（Mach Object）</strong></h2><ul>
+<li><strong>使用平台</strong>：macOS、iOS。</li>
+<li><strong>特点</strong>：<ul>
+<li>支持多种架构（如x86、ARM）。</li>
+<li>包含Mach-O头、加载命令、段和节。</li>
+<li>支持动态链接（dylib）和框架（Framework）。</li>
+<li>支持代码签名和沙盒机制。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>otool</code>、<code>nm</code>、<code>lipo</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.o</code>、<code>.dylib</code>、<code>.app</code>。</li>
+</ul>
+<h3 id="1-提取特定位"><a href="#1-提取特定位" class="headerlink" title="1. 提取特定位"></a>1. <strong>提取特定位</strong></h3><p>通过掩码操作，可以从数据中提取特定位。例如，提取一个字节的低4位：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = <span class="hljs-number">0b00001111</span><br>result = byte &amp; mask  # 结果为 <span class="hljs-number">0b00001100</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-设置特定位"><a href="#2-设置特定位" class="headerlink" title="2. 设置特定位"></a>2. <strong>设置特定位</strong></h3><p>掩码操作可以设置数据中的特定位。例如，设置一个字节的第3位：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = <span class="hljs-number">0b00000100</span><br>result = byte | mask  # 结果为 <span class="hljs-number">0b10101100</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-清除特定位"><a href="#3-清除特定位" class="headerlink" title="3. 清除特定位"></a>3. <strong>清除特定位</strong></h3><p>掩码操作可以清除数据中的特定位。例如，清除一个字节的第5位：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = ~<span class="hljs-number">0b00100000</span><br>result = byte &amp; mask  # 结果为 <span class="hljs-number">0b10001100</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-切换特定位"><a href="#4-切换特定位" class="headerlink" title="4. 切换特定位"></a>4. <strong>切换特定位</strong></h3><p>掩码操作可以切换数据中的特定位。例如，切换一个字节的第2位：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = <span class="hljs-number">0b00000010</span><br>result = byte ^ mask  # 结果为 <span class="hljs-number">0b10101110</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-检查特定位"><a href="#5-检查特定位" class="headerlink" title="5. 检查特定位"></a>5. <strong>检查特定位</strong></h3><p>掩码操作可以检查数据中的特定位是否被设置。例如，检查一个字节的第7位：</p>
+<p>python</p>
+<p>复制</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = <span class="hljs-number">0b10000000</span><br><span class="hljs-keyword">if</span> byte &amp; mask:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第7位被设置&quot;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第7位未被设置&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-组合掩码"><a href="#6-组合掩码" class="headerlink" title="6. 组合掩码"></a>6. <strong>组合掩码</strong></h3><p>多个掩码可以组合使用。例如，提取一个字节的第2位和第4位：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">byte = <span class="hljs-number">0b10101100</span><br>mask = <span class="hljs-number">0b00001010</span><br>result = byte &amp; mask  # 结果为 <span class="hljs-number">0b00001000</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-移位操作"><a href="#7-移位操作" class="headerlink" title="7. 移位操作"></a>7. <strong>移位操作</strong></h3><p>移位操作常与掩码操作结合使用。例如，提取一个32位整数的第5到第8位：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">value</span> = <span class="hljs-number">0</span>x12345678<br><span class="hljs-attr">mask</span> = <span class="hljs-number">0</span>x000000F0<br><span class="hljs-attr">result</span> = (value &amp; mask) &gt;&gt; <span class="hljs-number">4</span>  <span class="hljs-comment"># 结果为 0x00000005</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="Std库"><a href="#Std库" class="headerlink" title="Std库"></a>Std库</h1><h3 id="1-容器（Containers）"><a href="#1-容器（Containers）" class="headerlink" title="1. 容器（Containers）"></a><strong>1. 容器（Containers）</strong></h3><p>用于存储和管理数据的模板类，分为：</p>
+<ul>
+<li><strong>顺序容器</strong>：按顺序存储元素。<ul>
+<li><code>vector</code>：动态数组。</li>
+<li><code>list</code>：双向链表。</li>
+<li><code>deque</code>：双端队列。</li>
+<li><code>array</code>：固定大小数组（C++11）。</li>
+<li><code>forward_list</code>：单向链表（C++11）。</li>
+</ul>
+</li>
+<li><strong>关联容器</strong>：基于键值对的有序&#x2F;无序集合。<ul>
+<li><code>set</code>&#x2F;<code>multiset</code>：有序唯一&#x2F;重复集合。</li>
+<li><code>map</code>&#x2F;<code>multimap</code>：有序键值对。</li>
+<li><code>unordered_set</code>&#x2F;<code>unordered_multiset</code>：哈希表实现的集合（C++11）。</li>
+<li><code>unordered_map</code>&#x2F;<code>unordered_multimap</code>：哈希表实现的键值对（C++11）。</li>
+</ul>
+</li>
+<li><strong>容器适配器</strong>：基于其他容器实现的接口。<ul>
+<li><code>stack</code>：后进先出（LIFO）栈。</li>
+<li><code>queue</code>：先进先出（FIFO）队列。</li>
+<li><code>priority_queue</code>：优先级队列。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br>std::vector&lt;<span class="hljs-type">int</span>&gt; nums = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-算法（Algorithms）"><a href="#2-算法（Algorithms）" class="headerlink" title="2. 算法（Algorithms）"></a><strong>2. 算法（Algorithms）</strong></h3><p>提供通用算法，通过 <code>&lt;algorithm&gt;</code> 头文件访问：</p>
+<ul>
+<li><strong>非修改序列操作</strong>：<code>for_each</code>, <code>find</code>, <code>count</code>。</li>
+<li><strong>修改序列操作</strong>：<code>copy</code>, <code>fill</code>, <code>replace</code>。</li>
+<li><strong>排序和查找</strong>：<code>sort</code>, <code>binary_search</code>, <code>lower_bound</code>。</li>
+<li><strong>数值操作</strong>：<code>accumulate</code>, <code>inner_product</code>（需 <code>&lt;numeric&gt;</code>）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br>std::<span class="hljs-built_in">sort</span>(nums.<span class="hljs-built_in">begin</span>(), nums.<span class="hljs-built_in">end</span>());<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-字符串处理（Strings）"><a href="#3-字符串处理（Strings）" class="headerlink" title="3. 字符串处理（Strings）"></a><strong>3. 字符串处理（Strings）</strong></h3><ul>
+<li><code>std::string</code>：动态字符串类，支持拼接、查找、替换等操作。</li>
+<li><code>std::string_view</code>：字符串视图（C++17），用于高效读取字符串片段。</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> s = <span class="hljs-string">&quot;Hello&quot;</span>;<br>s.<span class="hljs-built_in">append</span>(<span class="hljs-string">&quot; World&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-输入-输出（I-O）"><a href="#4-输入-输出（I-O）" class="headerlink" title="4. 输入&#x2F;输出（I&#x2F;O）"></a><strong>4. 输入&#x2F;输出（I&#x2F;O）</strong></h3><p>通过 <code>&lt;iostream&gt;</code>、<code>&lt;fstream&gt;</code> 等头文件提供：</p>
+<ul>
+<li><strong>流对象</strong>：<code>std::cin</code>, <code>std::cout</code>, <code>std::cerr</code>, <code>std::clog</code>。</li>
+<li><strong>文件操作</strong>：<code>std::ifstream</code>, <code>std::ofstream</code>。</li>
+<li><strong>格式化工具</strong>：<code>std::hex</code>, <code>std::setw</code>, <code>std::fixed</code>（需 <code>&lt;iomanip&gt;</code>）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br>std::cout &lt;&lt; <span class="hljs-string">&quot;Value: &quot;</span> &lt;&lt; <span class="hljs-number">42</span> &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-智能指针（Smart-Pointers）"><a href="#5-智能指针（Smart-Pointers）" class="headerlink" title="5. 智能指针（Smart Pointers）"></a><strong>5. 智能指针（Smart Pointers）</strong></h3><p>用于自动内存管理（需 <code>&lt;memory&gt;</code>）：</p>
+<ul>
+<li><code>std::unique_ptr</code>：独占所有权的指针。</li>
+<li><code>std::shared_ptr</code>：共享所有权的指针。</li>
+<li><code>std::weak_ptr</code>：解决 <code>shared_ptr</code> 循环引用问题。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> ptr = std::<span class="hljs-built_in">make_unique</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">42</span>);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-工具类与函数（Utilities）"><a href="#6-工具类与函数（Utilities）" class="headerlink" title="6. 工具类与函数（Utilities）"></a><strong>6. 工具类与函数（Utilities）</strong></h3><ul>
+<li><strong>元编程</strong>：<code>std::pair</code>, <code>std::tuple</code>, <code>std::variant</code>（C++17）。</li>
+<li><strong>类型操作</strong>：<code>std::move</code>（移动语义）, <code>std::forward</code>（完美转发）。</li>
+<li><strong>时间和日期</strong>：<code>std::chrono</code>（需 <code>&lt;chrono&gt;</code>）。</li>
+<li><strong>随机数生成</strong>：<code>std::mt19937</code>（需 <code>&lt;random&gt;</code>）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::pair&lt;<span class="hljs-type">int</span>, std::string&gt; p = &#123;<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>&#125;;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="7-多线程与并发（Concurrency）"><a href="#7-多线程与并发（Concurrency）" class="headerlink" title="7. 多线程与并发（Concurrency）"></a><strong>7. 多线程与并发（Concurrency）</strong></h3><p>通过 <code>&lt;thread&gt;</code>, <code>&lt;mutex&gt;</code>, <code>&lt;atomic&gt;</code> 等头文件支持：</p>
+<ul>
+<li>线程管理：<code>std::thread</code>, <code>std::jthread</code>（C++20）。</li>
+<li>同步机制：<code>std::mutex</code>, <code>std::lock_guard</code>, <code>std::condition_variable</code>。</li>
+<li>原子操作：<code>std::atomic&lt;T&gt;</code>。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;thread&gt;</span></span><br><span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">([]()&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Thread!&quot;</span>; &#125;)</span></span>;<br>t.<span class="hljs-built_in">join</span>();<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="8-异常处理（Exceptions）"><a href="#8-异常处理（Exceptions）" class="headerlink" title="8. 异常处理（Exceptions）"></a><strong>8. 异常处理（Exceptions）</strong></h3><ul>
+<li>异常类：<code>std::exception</code> 及其子类（如 <code>std::runtime_error</code>）。</li>
+<li>异常工具：<code>std::throw_with_nested</code>（C++11）。</li>
+</ul>
+<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs zephir"><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">throw</span> std::runtime_error(<span class="hljs-string">&quot;Error!&quot;</span>);<br>&#125; <span class="hljs-keyword">catch</span> (<span class="hljs-keyword">const</span> std::exception&amp; e) &#123;<br>    std::cerr &lt;&lt; e.what();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="9-其他重要组件"><a href="#9-其他重要组件" class="headerlink" title="9. 其他重要组件"></a><strong>9. 其他重要组件</strong></h3><ul>
+<li><strong>函数对象</strong>：<code>std::function</code>（包装函数指针、Lambda 等）。</li>
+<li><strong>正则表达式</strong>：<code>std::regex</code>（需 <code>&lt;regex&gt;</code>）。</li>
+<li><strong>文件系统操作</strong>：<code>std::filesystem</code>（C++17，需 <code>&lt;filesystem&gt;</code>）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;functional&gt;</span></span><br>std::function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>, <span class="hljs-type">int</span>)&gt; add = [](<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b) &#123; <span class="hljs-keyword">return</span> a + b; &#125;;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>hell0~</div>
+      <div>http://example.com/2025/02/04/4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ţ��</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/07/3/" title="happy~happy~happy~">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">happy~happy~happy~</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/27/2/" title="study">
+                        <span class="hidden-mobile">study</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"5JJ9PAqs16kq01sfHmLwwPiu-gzGzoHsz","appKey":"DP58BDQMjqXMDoMsysTn1wG6","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+        次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+        人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

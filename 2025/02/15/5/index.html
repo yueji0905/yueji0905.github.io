@@ -27,7 +27,7 @@
 <meta property="og:description" content="RSP(Stack Pointer Register):1.始终指向当前栈的顶部(最后入栈的数据的位置) 2.当执行push、pop、call、ret等指令时，RSP的值会自动变化。 RBP（Base Pointer Register):1.通常用作栈桢的基地址(指向当前的函数栈帧的起点)。 2.在函数执行中，RBP的值一般保持不变，方便通过偏移量访问局部变量或者参数。 mov rbp,rsp的作">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-15T12:32:59.000Z">
-<meta property="article:modified_time" content="2025-02-15T15:26:29.129Z">
+<meta property="article:modified_time" content="2025-02-17T03:12:50.339Z">
 <meta property="article:author" content="ţ��">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -235,7 +235,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2k 字
         
       </span>
     
@@ -246,7 +246,7 @@
         
         
         
-          15 分钟
+          17 分钟
         
       </span>
     
@@ -318,6 +318,21 @@
 <p>在x86&#x2F;x64架构中，fs是段寄存器之一，用于访问线程特定的内存区域。</p>
 <p>**Windows系统:**fs指向当前线程TIB，包括线程的异常处理链、栈信息等。</p>
 <p>**Linux系统：<strong>fs可以用于</strong>线程局部存储(TLS)**或者其他内核数据结构。</p>
+<h1 id="mov和lea"><a href="#mov和lea" class="headerlink" title="mov和lea"></a>mov和lea</h1><p>1.lea可以优化代码（他只计算地址而不涉及数据传输，再某种情况下可以减少内存访问次数）</p>
+<p>​    mov涉及实际的数据复制，可能会增加内存访问次数</p>
+<p>2.lea用于循环、数组操作和函数参数处理，因为他可以快速计算地址。</p>
+<p>   mov用于一般的数据处理（变量处理、函数返回值）</p>
+<h2 id="lea"><a href="#lea" class="headerlink" title="lea"></a>lea</h2><p>lea指令用于计算操作数的有效地址，并将其存储在寄存器里。不涉及实际的数据传输，只计算地址。</p>
+<p>常用于获取数组、结构体或者变量地址，以及在寻呼那和数组操作中计算偏移地址。</p>
+<p>eg：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">lea <span class="hljs-keyword">edi</span>, [lpBuffer] ; 将变量 lpBuffer 的地址加载到 <span class="hljs-keyword">edi</span> 寄存器中<br></code></pre></td></tr></table></figure>
+
+<h2 id="mov"><a href="#mov" class="headerlink" title="mov"></a>mov</h2><p>用于将数据从一个位置移动到另一个位置、数据的粘贴复制。</p>
+<p>可以移动立即数、寄存器中的值或内存中的数据。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, [lpBuffer] <span class="hljs-comment">; 将内存地址 lpBuffer 处的数据移动到 eax 寄存器中</span><br></code></pre></td></tr></table></figure>
+
+
+
 <h1 id="Canary"><a href="#Canary" class="headerlink" title="Canary"></a>Canary</h1><p><strong>Canary 值</strong>（Stack Canary&#x2F;Cookie）是计算机安全中用于检测<strong>栈溢出攻击</strong>（Stack Buffer Overflow）的一种防御机制。它的核心思想是在栈的关键位置插入一个随机值，并在函数返回前验证该值是否被篡改。以下是关于 Canary 值的详细解析：</p>
 <hr>
 <h3 id="1-核心作用"><a href="#1-核心作用" class="headerlink" title="1. 核心作用"></a><strong>1. 核心作用</strong></h3><ul>
@@ -395,6 +410,7 @@
 <li><strong>最佳实践</strong>：需结合其他防护（如 ASLR、DEP、CFI）。</li>
 </ul>
 <p>Canary 值是现代软件安全的基石之一，理解其原理对逆向工程、漏洞分析和防御设计至关重要。</p>
+<h1 id="BSS、-data和-text"><a href="#BSS、-data和-text" class="headerlink" title=".BSS、.data和.text"></a>.BSS、.data和.text</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/SXXYNHHXX/article/details/142489025?fromshare=blogdetail&sharetype=blogdetail&sharerId=142489025&sharerefer=PC&sharesource=2401_88035404&sharefrom=from_link">https://blog.csdn.net/SXXYNHHXX/article/details/142489025?fromshare=blogdetail&amp;sharetype=blogdetail&amp;sharerId=142489025&amp;sharerefer=PC&amp;sharesource=2401_88035404&amp;sharefrom=from_link</a></p>
 
                 
               </div>
@@ -456,6 +472,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/02/17/6/" title="开学第一躺">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">开学第一躺</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

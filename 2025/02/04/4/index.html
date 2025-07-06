@@ -14,7 +14,7 @@
 
   
 
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'http://yueji0905.github.io/project';</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'http://yueji0905.github.io';</script>
   
   <title>
     hell0~ |
@@ -31,50 +31,50 @@
   
   
     
-<link rel="stylesheet" href="/project/css/loader.css">
+<link rel="stylesheet" href="/css/loader.css">
 
   
   
     <meta name="description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hell0~">
-<meta property="og:url" content="http://yueji0905.github.io/project/2025/02/04/4/">
+<meta property="og:url" content="http://yueji0905.github.io/2025/02/04/4/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun1.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun2.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun3.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun4.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun5.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun6.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun7.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun8.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun9.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/base1.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/base2.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/base3.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/base4.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/base5.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/xxor0.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/xxor1.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/xxor2.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/xxor3.png">
-<meta property="og:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/xxor4.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun1.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun2.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun3.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun4.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun5.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun6.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun7.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun8.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/fun9.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/base1.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/base2.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/base3.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/base4.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/base5.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/xxor0.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/xxor1.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/xxor2.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/xxor3.png">
+<meta property="og:image" content="http://yueji0905.github.io/2025/02/04/4/xxor4.png">
 <meta property="article:published_time" content="2025-02-04T05:14:52.000Z">
 <meta property="article:modified_time" content="2025-02-09T12:36:13.025Z">
 <meta property="article:author" content="whya">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yueji0905.github.io/project/project/2025/02/04/4/fun1.png">
+<meta name="twitter:image" content="http://yueji0905.github.io/2025/02/04/4/fun1.png">
   
   
-    <link rel="alternate" href="/project/atom.xml" title="null" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
   
   
-    <link rel="shortcut icon" href="/project/images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.ico">
   
   
-<link rel="stylesheet" href="/project/css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
   <link rel="preload" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL&#x2F;toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx&#x2F;1oA&#x2F;0l8ysE" crossorigin="anonymous">
   
@@ -159,7 +159,7 @@
               &#xe62b;
              
           </div>
-          <a class="main-nav-link" href="/project/">首页</a>
+          <a class="main-nav-link" href="/">首页</a>
         </span>
       
         <span class="main-nav-link-wrap">
@@ -168,7 +168,7 @@
               &#xe62b;
              
           </div>
-          <a class="main-nav-link" href="/project/archives">归档</a>
+          <a class="main-nav-link" href="/archives">归档</a>
         </span>
       
         <span class="main-nav-link-wrap">
@@ -177,7 +177,7 @@
               &#xe62b;
              
           </div>
-          <a class="main-nav-link" href="/project/about">关于</a>
+          <a class="main-nav-link" href="/about">关于</a>
         </span>
       
         <span class="main-nav-link-wrap">
@@ -186,7 +186,7 @@
               &#xe62b;
              
           </div>
-          <a class="main-nav-link" href="/project/friend">友链</a>
+          <a class="main-nav-link" href="/friend">友链</a>
         </span>
       
     
@@ -194,7 +194,7 @@
   </nav>
   <nav id="sub-nav">
     
-      <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS 订阅" target="_blank"></a>
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
     
     
       <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
@@ -211,7 +211,7 @@
           
         </picture>
         
-          <img  fetchpriority="high" src="/project/images/banner.webp" alt="hell0~">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="hell0~">
         
       
     
@@ -221,7 +221,7 @@
       
         
         
-          <a href="/project/" id="logo">
+          <a href="/" id="logo">
             <h1 data-aos="slide-up">hell0~</h1>
           </a>
         
@@ -255,7 +255,7 @@
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
-  <img data-src="/project/avatar/source/_data/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
+  <img data-src="/avatar/source/_data/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
   <div class="sidebar-author-name">whya</div>
   <div class="sidebar-description">good good study GP</div>
 </div>
@@ -280,7 +280,7 @@
   
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/" aria-label="首页"></a>
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -290,7 +290,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/archives" aria-label="归档"></a>
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -300,7 +300,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/about" aria-label="关于"></a>
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -310,7 +310,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/friend" aria-label="友链"></a>
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -361,46 +361,46 @@
       
       
         <h2 id="WUSTCTF2020-Cr0ssfun"><a href="#WUSTCTF2020-Cr0ssfun" class="headerlink" title="[WUSTCTF2020]Cr0ssfun"></a>[WUSTCTF2020]Cr0ssfun</h2><h2 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
-<p><img src="/project/project/2025/02/04/4/fun1.png"></p>
-<h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p><img src="/project/project/2025/02/04/4/fun2.png"></p>
+<p><img src="/2025/02/04/4/fun1.png"></p>
+<h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p><img src="/2025/02/04/4/fun2.png"></p>
 <p>分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it!</p>
 <p>跟进check函数</p>
-<p><img src="/project/project/2025/02/04/4/fun3.png"></p>
+<p><img src="/2025/02/04/4/fun3.png"></p>
 <p>继续跟进就ok了</p>
-<p><img src="/project/project/2025/02/04/4/fun4.png"></p>
-<p><img src="/project/project/2025/02/04/4/fun5.png"></p>
-<p><img src="/project/project/2025/02/04/4/fun6.png"></p>
-<p><img src="/project/project/2025/02/04/4/fun7.png"></p>
-<p><img src="/project/project/2025/02/04/4/fun8.png"></p>
-<p><img src="/project/project/2025/02/04/4/fun9.png"></p>
+<p><img src="/2025/02/04/4/fun4.png"></p>
+<p><img src="/2025/02/04/4/fun5.png"></p>
+<p><img src="/2025/02/04/4/fun6.png"></p>
+<p><img src="/2025/02/04/4/fun7.png"></p>
+<p><img src="/2025/02/04/4/fun8.png"></p>
+<p><img src="/2025/02/04/4/fun9.png"></p>
 <p>按照下标将他们组合起来就得到flag<code>ctf2020&#123;cpp_@nd_r3verse_@re_fun&#125;</code></p>
 <h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><p>感觉我做的好麻烦，去网上看看，同样很麻烦，顺了个没啥用的脚本</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	char a1[32];</span><br><span class="line">	a1[1] = &#x27;c&#x27;;a1[25] =&#x27;@&#x27; ; a1[27] = &#x27;e&#x27;;</span><br><span class="line">	  a1[4] = &#x27;2&#x27;;</span><br><span class="line">      a1[17] = &#x27;r&#x27;;</span><br><span class="line">       a1[29] = &#x27;f&#x27;;</span><br><span class="line">       a1[17]= &#x27;r&#x27;;</span><br><span class="line">       a1[24] = &#x27;_&#x27;;</span><br><span class="line">       a1[2] = &#x27;t&#x27;;</span><br><span class="line">       a1[9] = &#x27;c&#x27;;</span><br><span class="line">       a1[32] = &#x27;&#125;&#x27;;</span><br><span class="line">       a1[19] = &#x27;v&#x27;;</span><br><span class="line">       a1[5] = &#x27;0&#x27;;</span><br><span class="line">       a1[14] = &#x27;n&#x27;;</span><br><span class="line">        a1[15] = &#x27;d&#x27;;</span><br><span class="line">       a1[8] =&#x27;&#123;&#x27;;</span><br><span class="line">       a1[18] = &#x27;3&#x27;;</span><br><span class="line">       a1[28] = &#x27;_&#x27;;</span><br><span class="line">       a1[21] = &#x27;r&#x27;;</span><br><span class="line">        a1[0] = &#x27;w&#x27;;</span><br><span class="line">      a1[6] = &#x27;2&#x27;;</span><br><span class="line">       a1[22] = &#x27;s&#x27;;</span><br><span class="line">       a1[31] = &#x27;n&#x27;;</span><br><span class="line">       a1[12] = &#x27;_&#x27;;</span><br><span class="line">        a1[7] = &#x27;0&#x27;;</span><br><span class="line">       a1[16] = &#x27;_&#x27;;</span><br><span class="line">       a1[11] = &#x27;p&#x27;;</span><br><span class="line">       a1[23] = &#x27;e&#x27;;</span><br><span class="line">       a1[30] = &#x27;u&#x27;;</span><br><span class="line">    	a1[10] = &#x27;p&#x27;;</span><br><span class="line">       a1[13] = &#x27;@&#x27;;</span><br><span class="line">       a1[3] = &#x27;f&#x27;;</span><br><span class="line">       a1[26] = &#x27;r&#x27;;</span><br><span class="line">      a1[20] = &#x27;e&#x27;;</span><br><span class="line">      for(int i=0;i&lt;=32;i++)cout &lt;&lt; a1[i];  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h1 id="UTCTF2020-basic-re"><a href="#UTCTF2020-basic-re" class="headerlink" title="[UTCTF2020]basic-re"></a>[UTCTF2020]basic-re</h1><h2 id="查壳-1"><a href="#查壳-1" class="headerlink" title="查壳"></a>查壳</h2><p>64位无壳文件</p>
-<p><img src="/project/project/2025/02/04/4/base1.png"></p>
+<p><img src="/2025/02/04/4/base1.png"></p>
 <h2 id="关键信息-反编译"><a href="#关键信息-反编译" class="headerlink" title="关键信息&amp;反编译"></a>关键信息&amp;反编译</h2><p>shift+F12查找字符串发现好多关键词，进去看看</p>
 <p>得到mTyqm7wjODkrNLcWl0eqO8K8gc1BPk1GNLgUpI&#x3D;&#x3D;</p>
 <p><code>base64Encode( )</code>进去看看吧</p>
-<p><img src="/project/project/2025/02/04/4/base2.png"></p>
+<p><img src="/2025/02/04/4/base2.png"></p>
 <p>base编码过程，从其中找到编码表</p>
-<p><img src="/project/project/2025/02/04/4/base3.png"></p>
+<p><img src="/2025/02/04/4/base3.png"></p>
 <p>AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0987654321&#x2F;+</p>
-<p><img src="/project/project/2025/02/04/4/base4.png"></p>
+<p><img src="/2025/02/04/4/base4.png"></p>
 <h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>把他们扔进CyberChef</p>
-<p><img src="/project/project/2025/02/04/4/base5.png"></p>
+<p><img src="/2025/02/04/4/base5.png"></p>
 <h1 id="GWCTF-2019-xxor"><a href="#GWCTF-2019-xxor" class="headerlink" title="[GWCTF 2019]xxor"></a>[GWCTF 2019]xxor</h1><h2 id="查壳-2"><a href="#查壳-2" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
-<p><img src="/project/project/2025/02/04/4/xxor0.png"></p>
+<p><img src="/2025/02/04/4/xxor0.png"></p>
 <h2 id="查找关键信息"><a href="#查找关键信息" class="headerlink" title="查找关键信息"></a>查找关键信息</h2><p>shift+F12查找关键字Congratulation!点进去看看吧</p>
-<p><img src="/project/project/2025/02/04/4/xxor1.png"></p>
+<p><img src="/2025/02/04/4/xxor1.png"></p>
 <h2 id="反编译-1"><a href="#反编译-1" class="headerlink" title="反编译"></a>反编译</h2><p>主要函数</p>
 <p><code>sub_400770(v7, a2) = 1</code>输出成功信息</p>
 <p><code>LODWORD(v7[j]) = dword_601078;</code>用于提取一个 64 位变量的低 32 位<br><code>HIDWORD(v7[j]) = dword_60107C;</code>用于提取一个 64 位变量的高 32 位</p>
-<p><img src="/project/project/2025/02/04/4/xxor2.png"></p>
+<p><img src="/2025/02/04/4/xxor2.png"></p>
 <p>深入sub_400686函数，发现只要获得其中需要的数据就可以逆向得到答案</p>
-<p><img src="/project/project/2025/02/04/4/xxor3.png"></p>
+<p><img src="/2025/02/04/4/xxor3.png"></p>
 <p>这是那个判断函数，从中就可以获得上面需要的信息</p>
-<p><img src="/project/project/2025/02/04/4/xxor4.png"></p>
+<p><img src="/2025/02/04/4/xxor4.png"></p>
 <p>用前几天学过的z3</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from z3 import *</span><br><span class="line">a1=[0]*6</span><br><span class="line">a1[0],a1[1],a1[2],a1[3],a1[4],a1[5]=Ints(&#x27;a1[0] a1[1] a1[2] a1[3] a1[4] a1[5]&#x27;)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(a1[2] - a1[3]== 2225223423)</span><br><span class="line">s.add(a1[3] + a1[4]== 4201428739)</span><br><span class="line">s.add(a1[2] - a1[4]==1121399208)</span><br><span class="line">s.add(a1[0] ==-548868226)</span><br><span class="line">s.add(a1[5] == -2064448480)</span><br><span class="line">s.add(a1[1] == 550153460)</span><br><span class="line">if s.check()==sat:</span><br><span class="line">    r=s.model()</span><br><span class="line">print(r)</span><br></pre></td></tr></table></figure>
 
@@ -587,10 +587,10 @@
         
           
           
-            <img data-src="/project/images/banner.webp" data-sizes="auto" alt="happy~" class="lazyload">
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="happy~" class="lazyload">
           
         
-        <a href="/project/2025/02/07/3/"></a>
+        <a href="/2025/02/07/3/"></a>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">
           
@@ -605,10 +605,10 @@
       
         
         
-          <img data-src="/project/images/banner.webp" data-sizes="auto" alt="study" class="lazyload">
+          <img data-src="/images/banner.webp" data-sizes="auto" alt="study" class="lazyload">
         
       
-      <a href="/project/2025/01/27/2/"></a>
+      <a href="/2025/01/27/2/"></a>
       <div class="article-nav-caption">后一篇</div>
       <h3 class="article-nav-title">
         
@@ -700,7 +700,7 @@
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
-  <img data-src="/project/avatar/source/_data/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
+  <img data-src="/avatar/source/_data/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
   <div class="sidebar-author-name">whya</div>
   <div class="sidebar-description">good good study GP</div>
 </div>
@@ -725,7 +725,7 @@
   
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/" aria-label="首页"></a>
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -735,7 +735,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/archives" aria-label="归档"></a>
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -745,7 +745,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/about" aria-label="关于"></a>
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -755,7 +755,7 @@
       </div>
     
       <div class="sidebar-menu-link-wrap">
-        <a class="sidebar-menu-link-dummy" href="/project/friend" aria-label="友链"></a>
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
         <div class="sidebar-menu-icon icon rotate">
           
             &#xe62b;
@@ -794,7 +794,7 @@
             <div id="reimu-hits"></div>
             <div id="reimu-pagination" class="reimu-pagination"></div>
           </div>
-          <img class="reimu-bg" src="/project/images/reimu.png"/>
+          <img class="reimu-bg" src="/images/reimu.png"/>
         </div>
       </div>
     
@@ -810,12 +810,12 @@
 
 
 
-<script src="/project/js/script.js"></script>
+<script src="/js/script.js"></script>
 
 
 
   
-<script src="/project/js/aos.js"></script>
+<script src="/js/aos.js"></script>
 
   <script>
     var aosInit = () => {
@@ -835,7 +835,7 @@
 
 
 
-<script src="/project/js/pjax_script.js" data-pjax></script>
+<script src="/js/pjax_script.js" data-pjax></script>
 
 
 
@@ -843,7 +843,7 @@
 
   <script>
     var ALGOLIA_CONFIG = {
-      logo: "/project/images/algolia_logo.svg",
+      logo: "/images/algolia_logo.svg",
       algolia: {
         applicationID: "",
         apiKey: "9ba9cb6dcdedd08e758694d21ad5d901",
@@ -866,7 +866,7 @@
 <script src="https://npm.webcache.cn/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha384-hHJCflT4KBLQyHfKO9vpstIcFKn&#x2F;Y+KHTORelMMEn7mOp2AVPp+7fr03dLgZiV3J" crossorigin="anonymous" defer></script>
 
   
-<script src="/project/js/algolia_search.js" defer></script>
+<script src="/js/algolia_search.js" defer></script>
 
 
 
@@ -896,13 +896,13 @@
         window.REIMU_POST = {
           author: "whya",
           title: "hell0~",
-          url: "http://yueji0905.github.io/project/2025/02/04/4/",
+          url: "http://yueji0905.github.io/2025/02/04/4/",
           excerpt: "",
           description: "",
           stripContent: "[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#123;cpp_@nd_r3verse_@re_fun&amp;#125; 脚本感觉我做的好麻烦，去网上看看",
           date: "Tue Feb 04 2025 13:14:52 GMT+0800",
           updated: "Sun Feb 09 2025 20:36:13 GMT+0800",
-          cover: "/project/images/banner.webp",
+          cover: "/images/banner.webp",
         };
       </script>
        
@@ -910,7 +910,7 @@
     
       
         
-<script src="/project/js/insert_highlight.js" data-pjax></script>
+<script src="/js/insert_highlight.js" data-pjax></script>
 
         
       

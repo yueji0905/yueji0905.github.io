@@ -1,0 +1,1004 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  
+    
+      data-theme-mode="auto"
+    
+  >
+  <head>
+  
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'http://example.com';</script>
+  
+  <title>
+    hell0~ |
+    
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hell0~">
+<meta property="og:url" content="http://example.com/2025/02/04/4/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun4.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun5.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun6.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun7.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun8.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/fun9.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base4.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/base5.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor0.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor1.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor2.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor3.png">
+<meta property="og:image" content="http://example.com/2025/02/04/4/xxor4.png">
+<meta property="article:published_time" content="2025-02-04T05:14:52.000Z">
+<meta property="article:modified_time" content="2025-02-09T12:36:13.025Z">
+<meta property="article:author" content="whya">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/02/04/4/fun1.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL&#x2F;toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx&#x2F;1oA&#x2F;0l8ysE" crossorigin="anonymous">
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" integrity="sha384-4NN3fZ5AokFyHuoihl7A9qWaCt+HsAtOaUsXwJGRb4&#x2F;SMBtFr2vcNSHR5E8dg0Wk" crossorigin="anonymous">
+
+  
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      
+      
+        
+      
+      <div class="loading-word">一旬老人祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+    
+  </nav>
+  
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="hell0~">
+        
+      
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">hell0~</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content"  class="sidebar-right" >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        
+          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WUSTCTF2020-Cr0ssfun"><span class="toc-number">1.</span> <span class="toc-text">[WUSTCTF2020]Cr0ssfun</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3"><span class="toc-number">2.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-number">3.</span> <span class="toc-text">反编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UTCTF2020-basic-re"><span class="toc-number"></span> <span class="toc-text">[UTCTF2020]basic-re</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3-1"><span class="toc-number">1.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF-%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-number">2.</span> <span class="toc-text">关键信息&amp;反编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86"><span class="toc-number">3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GWCTF-2019-xxor"><span class="toc-number"></span> <span class="toc-text">[GWCTF 2019]xxor</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3-2"><span class="toc-number">1.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">2.</span> <span class="toc-text">查找关键信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91-1"><span class="toc-number">3.</span> <span class="toc-text">反编译</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text">文件格式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ELF%EF%BC%88Executable-and-Linkable-Format%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1. ELF（Executable and Linkable Format）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-PE%EF%BC%88Portable-Executable%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2. PE（Portable Executable）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mach-O%EF%BC%88Mach-Object%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. Mach-O（Mach Object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8F%90%E5%8F%96%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.1.</span> <span class="toc-text">1. 提取特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AE%BE%E7%BD%AE%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.2.</span> <span class="toc-text">2. 设置特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B8%85%E9%99%A4%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.3.</span> <span class="toc-text">3. 清除特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%87%E6%8D%A2%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.4.</span> <span class="toc-text">4. 切换特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%A3%80%E6%9F%A5%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.5.</span> <span class="toc-text">5. 检查特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BB%84%E5%90%88%E6%8E%A9%E7%A0%81"><span class="toc-number">3.6.</span> <span class="toc-text">6. 组合掩码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%A7%BB%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-number">3.7.</span> <span class="toc-text">7. 移位操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Std%E5%BA%93"><span class="toc-number"></span> <span class="toc-text">Std库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%B9%E5%99%A8%EF%BC%88Containers%EF%BC%89"><span class="toc-number">0.1.</span> <span class="toc-text">1. 容器（Containers）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%97%E6%B3%95%EF%BC%88Algorithms%EF%BC%89"><span class="toc-number">0.2.</span> <span class="toc-text">2. 算法（Algorithms）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86%EF%BC%88Strings%EF%BC%89"><span class="toc-number">0.3.</span> <span class="toc-text">3. 字符串处理（Strings）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA%EF%BC%88I-O%EF%BC%89"><span class="toc-number">0.4.</span> <span class="toc-text">4. 输入&#x2F;输出（I&#x2F;O）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%EF%BC%88Smart-Pointers%EF%BC%89"><span class="toc-number">0.5.</span> <span class="toc-text">5. 智能指针（Smart Pointers）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%B7%A5%E5%85%B7%E7%B1%BB%E4%B8%8E%E5%87%BD%E6%95%B0%EF%BC%88Utilities%EF%BC%89"><span class="toc-number">0.6.</span> <span class="toc-text">6. 工具类与函数（Utilities）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91%EF%BC%88Concurrency%EF%BC%89"><span class="toc-number">0.7.</span> <span class="toc-text">7. 多线程与并发（Concurrency）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88Exceptions%EF%BC%89"><span class="toc-number">0.8.</span> <span class="toc-text">8. 异常处理（Exceptions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%85%B6%E4%BB%96%E9%87%8D%E8%A6%81%E7%BB%84%E4%BB%B6"><span class="toc-number">0.9.</span> <span class="toc-text">9. 其他重要组件</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
+  <div class="sidebar-author-name">whya</div>
+  <div class="sidebar-description">good good study</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+        
+      
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+  
+</aside>
+
+          <section id="main"><article id="post-4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-02-04T05:14:52.000Z" itemprop="datePublished">2025-02-04</time>
+    <time style="display: none;" id="post-update-time">2025-02-09</time>
+  </span>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="WUSTCTF2020-Cr0ssfun"><a href="#WUSTCTF2020-Cr0ssfun" class="headerlink" title="[WUSTCTF2020]Cr0ssfun"></a>[WUSTCTF2020]Cr0ssfun</h2><h2 id="查壳"><a href="#查壳" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
+<p><img src="/2025/02/04/4/fun1.png"></p>
+<h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p><img src="/2025/02/04/4/fun2.png"></p>
+<p>分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it!</p>
+<p>跟进check函数</p>
+<p><img src="/2025/02/04/4/fun3.png"></p>
+<p>继续跟进就ok了</p>
+<p><img src="/2025/02/04/4/fun4.png"></p>
+<p><img src="/2025/02/04/4/fun5.png"></p>
+<p><img src="/2025/02/04/4/fun6.png"></p>
+<p><img src="/2025/02/04/4/fun7.png"></p>
+<p><img src="/2025/02/04/4/fun8.png"></p>
+<p><img src="/2025/02/04/4/fun9.png"></p>
+<p>按照下标将他们组合起来就得到flag<code>ctf2020&#123;cpp_@nd_r3verse_@re_fun&#125;</code></p>
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><p>感觉我做的好麻烦，去网上看看，同样很麻烦，顺了个没啥用的脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	char a1[32];</span><br><span class="line">	a1[1] = &#x27;c&#x27;;a1[25] =&#x27;@&#x27; ; a1[27] = &#x27;e&#x27;;</span><br><span class="line">	  a1[4] = &#x27;2&#x27;;</span><br><span class="line">      a1[17] = &#x27;r&#x27;;</span><br><span class="line">       a1[29] = &#x27;f&#x27;;</span><br><span class="line">       a1[17]= &#x27;r&#x27;;</span><br><span class="line">       a1[24] = &#x27;_&#x27;;</span><br><span class="line">       a1[2] = &#x27;t&#x27;;</span><br><span class="line">       a1[9] = &#x27;c&#x27;;</span><br><span class="line">       a1[32] = &#x27;&#125;&#x27;;</span><br><span class="line">       a1[19] = &#x27;v&#x27;;</span><br><span class="line">       a1[5] = &#x27;0&#x27;;</span><br><span class="line">       a1[14] = &#x27;n&#x27;;</span><br><span class="line">        a1[15] = &#x27;d&#x27;;</span><br><span class="line">       a1[8] =&#x27;&#123;&#x27;;</span><br><span class="line">       a1[18] = &#x27;3&#x27;;</span><br><span class="line">       a1[28] = &#x27;_&#x27;;</span><br><span class="line">       a1[21] = &#x27;r&#x27;;</span><br><span class="line">        a1[0] = &#x27;w&#x27;;</span><br><span class="line">      a1[6] = &#x27;2&#x27;;</span><br><span class="line">       a1[22] = &#x27;s&#x27;;</span><br><span class="line">       a1[31] = &#x27;n&#x27;;</span><br><span class="line">       a1[12] = &#x27;_&#x27;;</span><br><span class="line">        a1[7] = &#x27;0&#x27;;</span><br><span class="line">       a1[16] = &#x27;_&#x27;;</span><br><span class="line">       a1[11] = &#x27;p&#x27;;</span><br><span class="line">       a1[23] = &#x27;e&#x27;;</span><br><span class="line">       a1[30] = &#x27;u&#x27;;</span><br><span class="line">    	a1[10] = &#x27;p&#x27;;</span><br><span class="line">       a1[13] = &#x27;@&#x27;;</span><br><span class="line">       a1[3] = &#x27;f&#x27;;</span><br><span class="line">       a1[26] = &#x27;r&#x27;;</span><br><span class="line">      a1[20] = &#x27;e&#x27;;</span><br><span class="line">      for(int i=0;i&lt;=32;i++)cout &lt;&lt; a1[i];  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="UTCTF2020-basic-re"><a href="#UTCTF2020-basic-re" class="headerlink" title="[UTCTF2020]basic-re"></a>[UTCTF2020]basic-re</h1><h2 id="查壳-1"><a href="#查壳-1" class="headerlink" title="查壳"></a>查壳</h2><p>64位无壳文件</p>
+<p><img src="/2025/02/04/4/base1.png"></p>
+<h2 id="关键信息-反编译"><a href="#关键信息-反编译" class="headerlink" title="关键信息&amp;反编译"></a>关键信息&amp;反编译</h2><p>shift+F12查找字符串发现好多关键词，进去看看</p>
+<p>得到mTyqm7wjODkrNLcWl0eqO8K8gc1BPk1GNLgUpI&#x3D;&#x3D;</p>
+<p><code>base64Encode( )</code>进去看看吧</p>
+<p><img src="/2025/02/04/4/base2.png"></p>
+<p>base编码过程，从其中找到编码表</p>
+<p><img src="/2025/02/04/4/base3.png"></p>
+<p>AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0987654321&#x2F;+</p>
+<p><img src="/2025/02/04/4/base4.png"></p>
+<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>把他们扔进CyberChef</p>
+<p><img src="/2025/02/04/4/base5.png"></p>
+<h1 id="GWCTF-2019-xxor"><a href="#GWCTF-2019-xxor" class="headerlink" title="[GWCTF 2019]xxor"></a>[GWCTF 2019]xxor</h1><h2 id="查壳-2"><a href="#查壳-2" class="headerlink" title="查壳"></a>查壳</h2><p>64位ELF文件</p>
+<p><img src="/2025/02/04/4/xxor0.png"></p>
+<h2 id="查找关键信息"><a href="#查找关键信息" class="headerlink" title="查找关键信息"></a>查找关键信息</h2><p>shift+F12查找关键字Congratulation!点进去看看吧</p>
+<p><img src="/2025/02/04/4/xxor1.png"></p>
+<h2 id="反编译-1"><a href="#反编译-1" class="headerlink" title="反编译"></a>反编译</h2><p>主要函数</p>
+<p><code>sub_400770(v7, a2) = 1</code>输出成功信息</p>
+<p><code>LODWORD(v7[j]) = dword_601078;</code>用于提取一个 64 位变量的低 32 位<br><code>HIDWORD(v7[j]) = dword_60107C;</code>用于提取一个 64 位变量的高 32 位</p>
+<p><img src="/2025/02/04/4/xxor2.png"></p>
+<p>深入sub_400686函数，发现只要获得其中需要的数据就可以逆向得到答案</p>
+<p><img src="/2025/02/04/4/xxor3.png"></p>
+<p>这是那个判断函数，从中就可以获得上面需要的信息</p>
+<p><img src="/2025/02/04/4/xxor4.png"></p>
+<p>用前几天学过的z3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from z3 import *</span><br><span class="line">a1=[0]*6</span><br><span class="line">a1[0],a1[1],a1[2],a1[3],a1[4],a1[5]=Ints(&#x27;a1[0] a1[1] a1[2] a1[3] a1[4] a1[5]&#x27;)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(a1[2] - a1[3]== 2225223423)</span><br><span class="line">s.add(a1[3] + a1[4]== 4201428739)</span><br><span class="line">s.add(a1[2] - a1[4]==1121399208)</span><br><span class="line">s.add(a1[0] ==-548868226)</span><br><span class="line">s.add(a1[5] == -2064448480)</span><br><span class="line">s.add(a1[1] == 550153460)</span><br><span class="line">if s.check()==sat:</span><br><span class="line">    r=s.model()</span><br><span class="line">print(r)</span><br></pre></td></tr></table></figure>
+
+<p>解密 ，然后再十六进制转化成字符串，得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">int main() &#123;</span><br><span class="line">unsigned int a2[4] = &#123;2,2,3,4&#125;;</span><br><span class="line">unsigned int a1[6] = &#123; 3746099070,550153460, 3774025685 ,1548802262 ,2652626477 ,2230518816 &#125;;</span><br><span class="line">unsigned int flag[6];</span><br><span class="line">unsigned v3, v4;</span><br><span class="line">unsigned int i,j;</span><br><span class="line">for (j = 0; j &lt; 6; j+=2)</span><br><span class="line">&#123;</span><br><span class="line">v3 = a1[j];</span><br><span class="line">v4 = a1[j+1];</span><br><span class="line">unsigned long long int tem = (unsigned long long int)0x458BCD42 * 64;</span><br><span class="line">unsigned int sum = (unsigned int) tem;</span><br><span class="line">for(i = 0; i &lt; 64; i++)</span><br><span class="line">&#123;</span><br><span class="line">v4 -= (v3 + sum + 20) ^ ((v3 &lt;&lt; 6) + a2[2]) ^ ((v3 &gt;&gt; 9) + a2[3]) ^ 16;</span><br><span class="line">v3 -= (v4 + sum + 11) ^ ((v4 &lt;&lt; 6) + a2[0]) ^ ((v4 &gt;&gt; 9) + a2[1]) ^ 32;</span><br><span class="line">sum -= 0x458BCD42;</span><br><span class="line">&#125;</span><br><span class="line">flag[j] = v3;</span><br><span class="line">flag[j + 1] = v4;</span><br><span class="line">&#125;</span><br><span class="line">for (int n = 0; n &lt; 6; n++)</span><br><span class="line">printf(&quot;%x&quot;, flag[n]);</span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h1><h2 id="1-ELF（Executable-and-Linkable-Format）"><a href="#1-ELF（Executable-and-Linkable-Format）" class="headerlink" title="1. ELF（Executable and Linkable Format）"></a><strong>1. ELF（Executable and Linkable Format）</strong></h2><ul>
+<li><strong>使用平台</strong>：Linux、Unix、类Unix系统（如FreeBSD、Android）。</li>
+<li><strong>特点</strong>：<ul>
+<li>支持多种架构（如x86、ARM、RISC-V）。</li>
+<li>支持动态链接和静态链接。</li>
+<li>结构清晰，包含ELF头、程序头表、节头表。</li>
+<li>常用于可执行文件、共享库（.so）、目标文件（.o）和核心转储。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>readelf</code>、<code>objdump</code>、<code>nm</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.elf</code>、<code>.so</code>、<code>.o</code>。</li>
+</ul>
+<hr>
+<h2 id="2-PE（Portable-Executable）"><a href="#2-PE（Portable-Executable）" class="headerlink" title="2. PE（Portable Executable）"></a><strong>2. PE（Portable Executable）</strong></h2><ul>
+<li><strong>使用平台</strong>：Windows。</li>
+<li><strong>特点</strong>：<ul>
+<li>基于COFF（Common Object File Format）扩展。</li>
+<li>支持32位（PE32）和64位（PE32+）。</li>
+<li>包含DOS头、PE头、节表、导入表、导出表等。</li>
+<li>支持动态链接（DLL文件）和资源管理（如图标、菜单）。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>dumpbin</code>、<code>PEview</code>、<code>CFF Explorer</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.exe</code>、<code>.dll</code>、<code>.sys</code>。</li>
+</ul>
+<hr>
+<h2 id="3-Mach-O（Mach-Object）"><a href="#3-Mach-O（Mach-Object）" class="headerlink" title="3. Mach-O（Mach Object）"></a><strong>3. Mach-O（Mach Object）</strong></h2><ul>
+<li><strong>使用平台</strong>：macOS、iOS。</li>
+<li><strong>特点</strong>：<ul>
+<li>支持多种架构（如x86、ARM）。</li>
+<li>包含Mach-O头、加载命令、段和节。</li>
+<li>支持动态链接（dylib）和框架（Framework）。</li>
+<li>支持代码签名和沙盒机制。</li>
+</ul>
+</li>
+<li><strong>工具</strong>：<code>otool</code>、<code>nm</code>、<code>lipo</code>。</li>
+<li><strong>文件扩展名</strong>：<code>.o</code>、<code>.dylib</code>、<code>.app</code>。</li>
+</ul>
+<h3 id="1-提取特定位"><a href="#1-提取特定位" class="headerlink" title="1. 提取特定位"></a>1. <strong>提取特定位</strong></h3><p>通过掩码操作，可以从数据中提取特定位。例如，提取一个字节的低4位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = 0b00001111</span><br><span class="line">result = byte &amp; mask  # 结果为 0b00001100</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-设置特定位"><a href="#2-设置特定位" class="headerlink" title="2. 设置特定位"></a>2. <strong>设置特定位</strong></h3><p>掩码操作可以设置数据中的特定位。例如，设置一个字节的第3位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = 0b00000100</span><br><span class="line">result = byte | mask  # 结果为 0b10101100</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-清除特定位"><a href="#3-清除特定位" class="headerlink" title="3. 清除特定位"></a>3. <strong>清除特定位</strong></h3><p>掩码操作可以清除数据中的特定位。例如，清除一个字节的第5位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = ~0b00100000</span><br><span class="line">result = byte &amp; mask  # 结果为 0b10001100</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-切换特定位"><a href="#4-切换特定位" class="headerlink" title="4. 切换特定位"></a>4. <strong>切换特定位</strong></h3><p>掩码操作可以切换数据中的特定位。例如，切换一个字节的第2位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = 0b00000010</span><br><span class="line">result = byte ^ mask  # 结果为 0b10101110</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-检查特定位"><a href="#5-检查特定位" class="headerlink" title="5. 检查特定位"></a>5. <strong>检查特定位</strong></h3><p>掩码操作可以检查数据中的特定位是否被设置。例如，检查一个字节的第7位：</p>
+<p>python</p>
+<p>复制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = 0b10000000</span><br><span class="line">if byte &amp; mask:</span><br><span class="line">    print(&quot;第7位被设置&quot;)</span><br><span class="line">else:</span><br><span class="line">    print(&quot;第7位未被设置&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-组合掩码"><a href="#6-组合掩码" class="headerlink" title="6. 组合掩码"></a>6. <strong>组合掩码</strong></h3><p>多个掩码可以组合使用。例如，提取一个字节的第2位和第4位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">byte = 0b10101100</span><br><span class="line">mask = 0b00001010</span><br><span class="line">result = byte &amp; mask  # 结果为 0b00001000</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-移位操作"><a href="#7-移位操作" class="headerlink" title="7. 移位操作"></a>7. <strong>移位操作</strong></h3><p>移位操作常与掩码操作结合使用。例如，提取一个32位整数的第5到第8位：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">value = 0x12345678</span><br><span class="line">mask = 0x000000F0</span><br><span class="line">result = (value &amp; mask) &gt;&gt; 4  # 结果为 0x00000005</span><br></pre></td></tr></table></figure>
+
+<h1 id="Std库"><a href="#Std库" class="headerlink" title="Std库"></a>Std库</h1><h3 id="1-容器（Containers）"><a href="#1-容器（Containers）" class="headerlink" title="1. 容器（Containers）"></a><strong>1. 容器（Containers）</strong></h3><p>用于存储和管理数据的模板类，分为：</p>
+<ul>
+<li><strong>顺序容器</strong>：按顺序存储元素。<ul>
+<li><code>vector</code>：动态数组。</li>
+<li><code>list</code>：双向链表。</li>
+<li><code>deque</code>：双端队列。</li>
+<li><code>array</code>：固定大小数组（C++11）。</li>
+<li><code>forward_list</code>：单向链表（C++11）。</li>
+</ul>
+</li>
+<li><strong>关联容器</strong>：基于键值对的有序&#x2F;无序集合。<ul>
+<li><code>set</code>&#x2F;<code>multiset</code>：有序唯一&#x2F;重复集合。</li>
+<li><code>map</code>&#x2F;<code>multimap</code>：有序键值对。</li>
+<li><code>unordered_set</code>&#x2F;<code>unordered_multiset</code>：哈希表实现的集合（C++11）。</li>
+<li><code>unordered_map</code>&#x2F;<code>unordered_multimap</code>：哈希表实现的键值对（C++11）。</li>
+</ul>
+</li>
+<li><strong>容器适配器</strong>：基于其他容器实现的接口。<ul>
+<li><code>stack</code>：后进先出（LIFO）栈。</li>
+<li><code>queue</code>：先进先出（FIFO）队列。</li>
+<li><code>priority_queue</code>：优先级队列。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;vector&gt;</span><br><span class="line">std::vector&lt;int&gt; nums = &#123;1, 2, 3&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-算法（Algorithms）"><a href="#2-算法（Algorithms）" class="headerlink" title="2. 算法（Algorithms）"></a><strong>2. 算法（Algorithms）</strong></h3><p>提供通用算法，通过 <code>&lt;algorithm&gt;</code> 头文件访问：</p>
+<ul>
+<li><strong>非修改序列操作</strong>：<code>for_each</code>, <code>find</code>, <code>count</code>。</li>
+<li><strong>修改序列操作</strong>：<code>copy</code>, <code>fill</code>, <code>replace</code>。</li>
+<li><strong>排序和查找</strong>：<code>sort</code>, <code>binary_search</code>, <code>lower_bound</code>。</li>
+<li><strong>数值操作</strong>：<code>accumulate</code>, <code>inner_product</code>（需 <code>&lt;numeric&gt;</code>）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">std::sort(nums.begin(), nums.end());</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-字符串处理（Strings）"><a href="#3-字符串处理（Strings）" class="headerlink" title="3. 字符串处理（Strings）"></a><strong>3. 字符串处理（Strings）</strong></h3><ul>
+<li><code>std::string</code>：动态字符串类，支持拼接、查找、替换等操作。</li>
+<li><code>std::string_view</code>：字符串视图（C++17），用于高效读取字符串片段。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::string s = &quot;Hello&quot;;</span><br><span class="line">s.append(&quot; World&quot;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-输入-输出（I-O）"><a href="#4-输入-输出（I-O）" class="headerlink" title="4. 输入&#x2F;输出（I&#x2F;O）"></a><strong>4. 输入&#x2F;输出（I&#x2F;O）</strong></h3><p>通过 <code>&lt;iostream&gt;</code>、<code>&lt;fstream&gt;</code> 等头文件提供：</p>
+<ul>
+<li><strong>流对象</strong>：<code>std::cin</code>, <code>std::cout</code>, <code>std::cerr</code>, <code>std::clog</code>。</li>
+<li><strong>文件操作</strong>：<code>std::ifstream</code>, <code>std::ofstream</code>。</li>
+<li><strong>格式化工具</strong>：<code>std::hex</code>, <code>std::setw</code>, <code>std::fixed</code>（需 <code>&lt;iomanip&gt;</code>）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">std::cout &lt;&lt; &quot;Value: &quot; &lt;&lt; 42 &lt;&lt; std::endl;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-智能指针（Smart-Pointers）"><a href="#5-智能指针（Smart-Pointers）" class="headerlink" title="5. 智能指针（Smart Pointers）"></a><strong>5. 智能指针（Smart Pointers）</strong></h3><p>用于自动内存管理（需 <code>&lt;memory&gt;</code>）：</p>
+<ul>
+<li><code>std::unique_ptr</code>：独占所有权的指针。</li>
+<li><code>std::shared_ptr</code>：共享所有权的指针。</li>
+<li><code>std::weak_ptr</code>：解决 <code>shared_ptr</code> 循环引用问题。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto ptr = std::make_unique&lt;int&gt;(42);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-工具类与函数（Utilities）"><a href="#6-工具类与函数（Utilities）" class="headerlink" title="6. 工具类与函数（Utilities）"></a><strong>6. 工具类与函数（Utilities）</strong></h3><ul>
+<li><strong>元编程</strong>：<code>std::pair</code>, <code>std::tuple</code>, <code>std::variant</code>（C++17）。</li>
+<li><strong>类型操作</strong>：<code>std::move</code>（移动语义）, <code>std::forward</code>（完美转发）。</li>
+<li><strong>时间和日期</strong>：<code>std::chrono</code>（需 <code>&lt;chrono&gt;</code>）。</li>
+<li><strong>随机数生成</strong>：<code>std::mt19937</code>（需 <code>&lt;random&gt;</code>）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::pair&lt;int, std::string&gt; p = &#123;1, &quot;one&quot;&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="7-多线程与并发（Concurrency）"><a href="#7-多线程与并发（Concurrency）" class="headerlink" title="7. 多线程与并发（Concurrency）"></a><strong>7. 多线程与并发（Concurrency）</strong></h3><p>通过 <code>&lt;thread&gt;</code>, <code>&lt;mutex&gt;</code>, <code>&lt;atomic&gt;</code> 等头文件支持：</p>
+<ul>
+<li>线程管理：<code>std::thread</code>, <code>std::jthread</code>（C++20）。</li>
+<li>同步机制：<code>std::mutex</code>, <code>std::lock_guard</code>, <code>std::condition_variable</code>。</li>
+<li>原子操作：<code>std::atomic&lt;T&gt;</code>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;thread&gt;</span><br><span class="line">std::thread t([]()&#123; std::cout &lt;&lt; &quot;Thread!&quot;; &#125;);</span><br><span class="line">t.join();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="8-异常处理（Exceptions）"><a href="#8-异常处理（Exceptions）" class="headerlink" title="8. 异常处理（Exceptions）"></a><strong>8. 异常处理（Exceptions）</strong></h3><ul>
+<li>异常类：<code>std::exception</code> 及其子类（如 <code>std::runtime_error</code>）。</li>
+<li>异常工具：<code>std::throw_with_nested</code>（C++11）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    throw std::runtime_error(&quot;Error!&quot;);</span><br><span class="line">&#125; catch (const std::exception&amp; e) &#123;</span><br><span class="line">    std::cerr &lt;&lt; e.what();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="9-其他重要组件"><a href="#9-其他重要组件" class="headerlink" title="9. 其他重要组件"></a><strong>9. 其他重要组件</strong></h3><ul>
+<li><strong>函数对象</strong>：<code>std::function</code>（包装函数指针、Lambda 等）。</li>
+<li><strong>正则表达式</strong>：<code>std::regex</code>（需 <code>&lt;regex&gt;</code>）。</li>
+<li><strong>文件系统操作</strong>：<code>std::filesystem</code>（C++17，需 <code>&lt;filesystem&gt;</code>）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;functional&gt;</span><br><span class="line">std::function&lt;int(int, int)&gt; add = [](int a, int b) &#123; return a + b; &#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+      
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="happy~" class="lazyload">
+          
+        
+        <a href="/2025/02/07/3/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            happy~
+          
+        </h3>
+      </div>
+    
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/images/banner.webp" data-sizes="auto" alt="study" class="lazyload">
+        
+      
+      <a href="/2025/01/27/2/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          study
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+
+</section>
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+      
+      
+        2020-2025
+      
+      <span class="footer-info-sep rotate"></span>
+      whya
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        6.4k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        00:27
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WUSTCTF2020-Cr0ssfun"><span class="toc-number">1.</span> <span class="toc-text">[WUSTCTF2020]Cr0ssfun</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3"><span class="toc-number">2.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-number">3.</span> <span class="toc-text">反编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UTCTF2020-basic-re"><span class="toc-number"></span> <span class="toc-text">[UTCTF2020]basic-re</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3-1"><span class="toc-number">1.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF-%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="toc-number">2.</span> <span class="toc-text">关键信息&amp;反编译</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86"><span class="toc-number">3.</span> <span class="toc-text">解密</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GWCTF-2019-xxor"><span class="toc-number"></span> <span class="toc-text">[GWCTF 2019]xxor</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E5%A3%B3-2"><span class="toc-number">1.</span> <span class="toc-text">查壳</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">2.</span> <span class="toc-text">查找关键信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91-1"><span class="toc-number">3.</span> <span class="toc-text">反编译</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text">文件格式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ELF%EF%BC%88Executable-and-Linkable-Format%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1. ELF（Executable and Linkable Format）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-PE%EF%BC%88Portable-Executable%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2. PE（Portable Executable）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Mach-O%EF%BC%88Mach-Object%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. Mach-O（Mach Object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8F%90%E5%8F%96%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.1.</span> <span class="toc-text">1. 提取特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AE%BE%E7%BD%AE%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.2.</span> <span class="toc-text">2. 设置特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B8%85%E9%99%A4%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.3.</span> <span class="toc-text">3. 清除特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%87%E6%8D%A2%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.4.</span> <span class="toc-text">4. 切换特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%A3%80%E6%9F%A5%E7%89%B9%E5%AE%9A%E4%BD%8D"><span class="toc-number">3.5.</span> <span class="toc-text">5. 检查特定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BB%84%E5%90%88%E6%8E%A9%E7%A0%81"><span class="toc-number">3.6.</span> <span class="toc-text">6. 组合掩码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E7%A7%BB%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-number">3.7.</span> <span class="toc-text">7. 移位操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Std%E5%BA%93"><span class="toc-number"></span> <span class="toc-text">Std库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%B9%E5%99%A8%EF%BC%88Containers%EF%BC%89"><span class="toc-number">0.1.</span> <span class="toc-text">1. 容器（Containers）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%97%E6%B3%95%EF%BC%88Algorithms%EF%BC%89"><span class="toc-number">0.2.</span> <span class="toc-text">2. 算法（Algorithms）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86%EF%BC%88Strings%EF%BC%89"><span class="toc-number">0.3.</span> <span class="toc-text">3. 字符串处理（Strings）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BE%93%E5%85%A5-%E8%BE%93%E5%87%BA%EF%BC%88I-O%EF%BC%89"><span class="toc-number">0.4.</span> <span class="toc-text">4. 输入&#x2F;输出（I&#x2F;O）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%EF%BC%88Smart-Pointers%EF%BC%89"><span class="toc-number">0.5.</span> <span class="toc-text">5. 智能指针（Smart Pointers）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%B7%A5%E5%85%B7%E7%B1%BB%E4%B8%8E%E5%87%BD%E6%95%B0%EF%BC%88Utilities%EF%BC%89"><span class="toc-number">0.6.</span> <span class="toc-text">6. 工具类与函数（Utilities）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91%EF%BC%88Concurrency%EF%BC%89"><span class="toc-number">0.7.</span> <span class="toc-text">7. 多线程与并发（Concurrency）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%EF%BC%88Exceptions%EF%BC%89"><span class="toc-number">0.8.</span> <span class="toc-text">8. 异常处理（Exceptions）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%85%B6%E4%BB%96%E9%87%8D%E8%A6%81%E7%BB%84%E4%BB%B6"><span class="toc-number">0.9.</span> <span class="toc-text">9. 其他重要组件</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="whya" class="lazyload">
+  <div class="sidebar-author-name">whya</div>
+  <div class="sidebar-description">good good study</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+  <script>
+    var ALGOLIA_CONFIG = {
+      logo: "/images/algolia_logo.svg",
+      algolia: {
+        applicationID: "0KV5MKU5CW",
+        apiKey: "9ba9cb6dcdedd08e758694d21ad5d901",
+        indexName: "good",
+        hits: {
+          "per_page": parseInt("10")
+        },
+        labels: {
+          "input_placeholder": "搜索.....",
+          "hits_empty": "未发现与 「${query}」相关内容",
+          "hits_stats": "找到${hits}条结果（用时 ${time} ms）"
+        }
+      }
+    };
+  </script>
+  
+<script src="https://npm.webcache.cn/algoliasearch@4.17.1/dist/algoliasearch-lite.umd.js" integrity="sha384-xvLS0jfKuoREs7pqkRI&#x2F;OI8GcqohO5S+jQz7ZBtQXnsXmD+9jDOOY4cL6dCPzlrk" crossorigin="anonymous" defer></script>
+
+  
+<script src="https://npm.webcache.cn/instantsearch.js@4.56.1/dist/instantsearch.production.min.js" integrity="sha384-hHJCflT4KBLQyHfKO9vpstIcFKn&#x2F;Y+KHTORelMMEn7mOp2AVPp+7fr03dLgZiV3J" crossorigin="anonymous" defer></script>
+
+  
+<script src="/js/algolia_search.js" defer></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js" integrity="sha384-8LyaidD9GPxQQgLJO&#x2F;WRw&#x2F;O2h3BoNq&#x2F;ApI&#x2F;ecpvM6RsrCz2qP2ppBXUKihP4V&#x2F;2d" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "whya",
+          title: "hell0~",
+          url: "http://example.com/2025/02/04/4/",
+          excerpt: "",
+          description: "",
+          stripContent: "[WUSTCTF2020]Cr0ssfun查壳64位ELF文件  反编译 分析可以知道将V4转化为64位整数类型，进入check函数，check函数的返回值被转化为unsigned int 类，如果返回值为1，输出Your flag is correct, go and submit it! 跟进check函数  继续跟进就ok了       按照下标将他们组合起来就得到flagctf2020&amp;#123;cpp_@nd_r3verse_@re_fun&amp;#125; 脚本感觉我做的好麻烦，去网上看看",
+          date: "Tue Feb 04 2025 13:14:52 GMT+0800",
+          updated: "Sun Feb 09 2025 20:36:13 GMT+0800",
+          cover: "/images/banner.webp",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+        
+
+
+
+
+
+
+
+
+      
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.4' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+  </html>
+
